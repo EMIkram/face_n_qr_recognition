@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "228039175830",
+    "project_id": "faceandqr",
+    "storage_bucket": "faceandqr.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:228039175830:android:5ac7ac1343f8d3cfac9cb7",
+        "android_client_info": {
+          "package_name": "com.softechbusinessservices.www.face_n_qr_recognition"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "228039175830-bmqfncs6fsr680jn0uflnojql4642145.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWL2N1gAZJbxlvMqFoxOOU4Ar3BanBWPY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "228039175830-bmqfncs6fsr680jn0uflnojql4642145.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
