@@ -139,6 +139,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       appBar: AppBar(
         centerTitle: true,
         actions: [
@@ -156,7 +157,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             QrImage(
-              data: 'Ikram',
+              data: 'Zain',
               version: 4,
               size: 250,
               gapless: false,
@@ -166,7 +167,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             SizedBox(height: 10,),
-            Text("Ikram",style: TextStyle(
+            Text("Zain",style: TextStyle(
                 fontSize: 25,
                 fontWeight: FontWeight.bold
             ),)
