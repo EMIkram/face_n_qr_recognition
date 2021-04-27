@@ -1,25 +1,28 @@
 // A screen that allows users to take a picture using a given camera.
 import 'dart:async';
 import 'dart:io';
-
+import 'package:FaceNetAuthentication/Utils/Utils.dart';
+import 'package:FaceNetAuthentication/pages/qr_scanner.dart';
+import 'package:FaceNetAuthentication/pages/widgets/FacePainter.dart';
+import 'package:FaceNetAuthentication/pages/widgets/auth-action-button.dart';
+import 'package:FaceNetAuthentication/services/camera.service.dart';
+import 'package:FaceNetAuthentication/services/facenet.service.dart';
+import 'package:FaceNetAuthentication/services/ml_vision_service.dart';
 import 'package:camera/camera.dart';
-import 'package:face_n_qr_recognition/services/camera.service.dart';
-import 'package:face_n_qr_recognition/services/facenet.service.dart';
-import 'package:face_n_qr_recognition/services/ml_vision_service.dart';
-import 'package:face_n_qr_recognition/widgets/FacePainter.dart';
-import 'package:face_n_qr_recognition/widgets/auth-action-button.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path/path.dart' show join;
 import 'dart:math' as math;
 import 'package:path_provider/path_provider.dart';
 
 class SignIn extends StatefulWidget {
   final CameraDescription cameraDescription;
-
+  final String qrString;
   const SignIn({
     Key key,
     @required this.cameraDescription,
+    @required this.qrString
   }) : super(key: key);
 
   @override
@@ -45,8 +48,8 @@ class SignInState extends State<SignIn> {
   String imagePath;
   Size imageSize;
   Face faceDetected;
-  CameraDescription cameraDescription;
-  List<CameraDescription> cameras;
+  String user_name='';
+
   @override
   void initState() {
     super.initState();
@@ -64,16 +67,9 @@ class SignInState extends State<SignIn> {
 
   /// starts the camera & start framing faces
   _start() async {
-    print(widget.cameraDescription);
-
-    availableCameras().then((cams) {
-      cameras=cams;
-      cameraDescription = cams.firstWhere(
-            (CameraDescription camera) => camera.lensDirection == CameraLensDirection.front,
-      );
-    });
     _initializeControllerFuture = _cameraService.startService(widget.cameraDescription);
     await _initializeControllerFuture;
+
     setState(() {
       cameraInitializated = true;
     });
@@ -84,9 +80,8 @@ class SignInState extends State<SignIn> {
   /// draws rectangles when detects faces
   _frameFaces() {
     imageSize = _cameraService.getImageSize();
-     print("face framing");
+
     _cameraService.cameraController.startImageStream((image) async {
-      print("image stream");
       if (_cameraService.cameraController != null) {
         // if its currently busy, avoids overprocessing
         if (_detectingFaces) return;
@@ -102,19 +97,40 @@ class SignInState extends State<SignIn> {
               setState(() {
                 faceDetected = faces[0];
               });
-              print("setting current prediction");
+              ///my code starts
+
               _faceNetService.setCurrentPrediction(image, faceDetected);
-              print("current prediction");
-              print(_faceNetService.predictedData);
+              print("prediction");
+              print(_faceNetService.predict());
+              setState(() {
+                user_name=_faceNetService.predict().split(':')[0];
+              });
+              if(user_name==widget.qrString)
+                {
+                  Fluttertoast.showToast(msg: "User: $user_name Signed in");
+                  Future.delayed(Duration(
+                    seconds: 2,
+                  ));
+                  Utils.pushReplacement(context, QRScanner());
+                }
+              else
+                {
+                  Future.delayed(Duration(
+                    seconds: 4,
+                  ));
+                  Utils.pushReplacement(context, QRScanner());
+                }
+
+              ///my code ends
               if (_saving) {
                 _saving = false;
                 _faceNetService.setCurrentPrediction(image, faceDetected);
-                print(_faceNetService.predictedData);
               }
 
             } else {
               setState(() {
                 faceDetected = null;
+                // user_name='';
               });
             }
           }
@@ -129,7 +145,7 @@ class SignInState extends State<SignIn> {
   }
 
   /// handles the button pressed event
-  Future<bool> onShot() async {
+  Future<void> onShot() async {
 
     if (faceDetected == null) {
       showDialog(
@@ -196,10 +212,12 @@ class SignInState extends State<SignIn> {
                         child: Stack(
                           fit: StackFit.expand,
                           children: <Widget>[
+
                             CameraPreview(_cameraService.cameraController),
                             CustomPaint(
-                              painter: FacePainter(face: faceDetected, imageSize: imageSize),
-                            )
+                              painter: FacePainter(face: faceDetected, imageSize: imageSize,userName:user_name),
+                            ),
+
                           ],
                         ),
                       ),
@@ -213,14 +231,14 @@ class SignInState extends State<SignIn> {
           }
         },
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: !_bottomSheetVisible
-          ? AuthActionButton(
-        _initializeControllerFuture,
-        onPressed: onShot,
-        isLogin: true,
-      )
-          : Container(),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      // floatingActionButton: !_bottomSheetVisible
+      //     ? AuthActionButton(
+      //         _initializeControllerFuture,
+      //         onPressed: onShot,
+      //         isLogin: true,
+      //       )
+      //     : Container(),
     );
   }
 }

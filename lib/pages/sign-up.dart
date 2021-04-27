@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:math' as math;
+import 'package:FaceNetAuthentication/pages/widgets/FacePainter.dart';
+import 'package:FaceNetAuthentication/pages/widgets/auth-action-button.dart';
+import 'package:FaceNetAuthentication/services/camera.service.dart';
+import 'package:FaceNetAuthentication/services/facenet.service.dart';
+import 'package:FaceNetAuthentication/services/ml_vision_service.dart';
 import 'package:camera/camera.dart';
-import 'package:face_n_qr_recognition/services/camera.service.dart';
-import 'package:face_n_qr_recognition/services/facenet.service.dart';
-import 'package:face_n_qr_recognition/services/ml_vision_service.dart';
-import 'package:face_n_qr_recognition/widgets/FacePainter.dart';
-import 'package:face_n_qr_recognition/widgets/auth-action-button.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' show join;

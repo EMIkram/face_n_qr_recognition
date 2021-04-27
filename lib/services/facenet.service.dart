@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'dart:typed_data';
+import 'package:FaceNetAuthentication/pages/db/database.dart';
 import 'package:camera/camera.dart';
-import 'package:face_n_qr_recognition/db/database.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:tflite_flutter/tflite_flutter.dart' as tflite;
 import 'package:image/image.dart' as imglib;

@@ -20,12 +20,12 @@ class Profile extends StatelessWidget {
             RaisedButton(
               child: Text('Logout'),
               onPressed: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => MyHomePage()
-                //   ),
-                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MyHomePage()
+                  ),
+                );
               },
             )
           ],

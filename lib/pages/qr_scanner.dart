@@ -1,35 +1,36 @@
 import 'dart:io';
+
+import 'package:FaceNetAuthentication/Utils/Utils.dart';
+import 'package:FaceNetAuthentication/pages/home.dart';
+import 'package:FaceNetAuthentication/pages/sign-in.dart';
+import 'package:FaceNetAuthentication/services/facenet.service.dart';
+import 'package:FaceNetAuthentication/services/ml_vision_service.dart';
 import 'package:camera/camera.dart';
-import 'package:face_n_qr_recognition/Screens/face_auth.dart';
-import 'package:face_n_qr_recognition/Screens/sign-in.dart';
-import 'package:face_n_qr_recognition/Utils/Utils.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'package:http/http.dart' as http;
 
+import 'db/database.dart';
 
-class QRViewExample extends StatefulWidget {
+class QRScanner extends StatefulWidget {
   @override
-  QRViewExampleState createState() => QRViewExampleState();
+  _QRScannerState createState() => _QRScannerState();
 }
 
-class QRViewExampleState extends State<QRViewExample> {
+class _QRScannerState extends State<QRScanner> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   Barcode result;
   QRViewController controller;
   CameraDescription cameraDescription;
   List<CameraDescription> cameras;
+  FaceNetService _faceNetService = FaceNetService();
+  MLVisionService _mlVisionService = MLVisionService();
+  DataBaseService _dataBaseService = DataBaseService();
+
   /// takes the front camera
   @override
   void initState() {
-    availableCameras().then((cams) {
-      cameras=cams;
-      cameraDescription = cams.firstWhere(
-            (CameraDescription camera) => camera.lensDirection == CameraLensDirection.front,
-      );
-    });
+  _startServices();
 
 
     // TODO: implement initState
@@ -52,8 +53,8 @@ class QRViewExampleState extends State<QRViewExample> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-
-          Utils.push(context, FaceAuth());
+      //TODO: push to the face sign in page
+          Utils.pushReplacement(context, MyHomePage());
         },
         child: Icon(Icons.app_registration),
       ),
@@ -68,8 +69,8 @@ class QRViewExampleState extends State<QRViewExample> {
             child: Container(
               decoration: BoxDecoration(
                   border: Border.all(
-                    color: Colors.green,
-                    width: 3
+                      color: Colors.green,
+                      width: 3
                   )
               ),
               child: GestureDetector(
@@ -78,20 +79,33 @@ class QRViewExampleState extends State<QRViewExample> {
                 child: QRView(
                   key: qrKey,
                   onQRViewCreated: _onQRViewCreated,
+                  cameraFacing: CameraFacing.front,
                 ),
               ),
             ),
           ),
           (result != null)
               ? Expanded(
-                child: Text(
+            child: Text(
                 'Barcode Type: ${describeEnum(result.format)}   Data: ${result.code}'),
-              )
+          )
               : Text('Scan a code'),
 
         ],
       ),
     );
+  }
+
+  void _startServices() async{
+    List<CameraDescription> cameras = await availableCameras();
+    /// takes the front camera
+    cameraDescription = cameras.firstWhere(
+          (CameraDescription camera) => camera.lensDirection == CameraLensDirection.front,
+    );
+    // start the services
+    await _faceNetService.loadModel();
+    await _dataBaseService.loadDB();
+    _mlVisionService.initialize();
   }
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
@@ -100,11 +114,11 @@ class QRViewExampleState extends State<QRViewExample> {
         result = scanData;
       });
 
-    Utils.push(context, SignIn(
-      cameraDescription: cameraDescription,
-      // authID: result.code,
-
-    ));
+      Utils.push(context, SignIn(
+        cameraDescription: cameraDescription,
+        qrString:result.code
+        // authID: result.code,
+      ));
     });
   }
   @override
