@@ -1,10 +1,9 @@
 
-
-import 'package:face_n_qr_recognition/Screens/face_auth.dart';
 import 'package:face_n_qr_recognition/Screens/profile.dart';
 import 'package:face_n_qr_recognition/db/database.dart';
 import 'package:face_n_qr_recognition/services/facenet.service.dart';
 import 'package:flutter/material.dart';
+import '../main.dart';
 
 class User {
   String user;
@@ -48,7 +47,7 @@ class _AuthActionButtonState extends State<AuthActionButton> {
 
     /// resets the face stored in the face net sevice
     this._faceNetService.setPredictedData(null);
-    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => FaceAuth()));
+    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => MyHomePage()));
   }
 
   Future _signIn(context) async {
@@ -59,8 +58,8 @@ class _AuthActionButtonState extends State<AuthActionButton> {
           context,
           MaterialPageRoute(
               builder: (BuildContext context) => Profile(
-                    username: this.predictedUser.user,
-                  )));
+                username: this.predictedUser.user,
+              )));
     } else {
       print(" WRONG PASSWORD!");
     }
@@ -109,46 +108,46 @@ class _AuthActionButtonState extends State<AuthActionButton> {
         children: [
           widget.isLogin && predictedUser != null
               ? Container(
-                  child: Text(
-                    'Welcome back, ' + predictedUser.user + '! 😄',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                )
+            child: Text(
+              'Welcome back, ' + predictedUser.user + '! 😄',
+              style: TextStyle(fontSize: 20),
+            ),
+          )
               : widget.isLogin
-                  ? Container(
-                      child: Text(
-                      'User not found 😞',
-                      style: TextStyle(fontSize: 20),
-                    ))
-                  : Container(),
+              ? Container(
+              child: Text(
+                'User not found 😞',
+                style: TextStyle(fontSize: 20),
+              ))
+              : Container(),
           !widget.isLogin
               ? TextField(
-                  controller: _userTextEditingController,
-                  decoration: InputDecoration(labelText: "Your Name"),
-                )
+            controller: _userTextEditingController,
+            decoration: InputDecoration(labelText: "Your Name"),
+          )
               : Container(),
           widget.isLogin && predictedUser == null
               ? Container()
               : TextField(
-                  controller: _passwordTextEditingController,
-                  decoration: InputDecoration(labelText: "Password"),
-                  obscureText: true,
-                ),
+            controller: _passwordTextEditingController,
+            decoration: InputDecoration(labelText: "Password"),
+            obscureText: true,
+          ),
           widget.isLogin && predictedUser != null
               ? RaisedButton(
-                  child: Text('Login'),
-                  onPressed: () async {
-                    _signIn(context);
-                  },
-                )
+            child: Text('Login'),
+            onPressed: () async {
+              _signIn(context);
+            },
+          )
               : !widget.isLogin
-                  ? RaisedButton(
-                      child: Text('Sign Up!'),
-                      onPressed: () async {
-                        await _signUp(context);
-                      },
-                    )
-                  : Container(),
+              ? RaisedButton(
+            child: Text('Sign Up!'),
+            onPressed: () async {
+              await _signUp(context);
+            },
+          )
+              : Container(),
         ],
       ),
     );

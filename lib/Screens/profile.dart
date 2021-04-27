@@ -1,5 +1,6 @@
-import 'package:face_n_qr_recognition/Screens/face_auth.dart';
 import 'package:flutter/material.dart';
+
+import 'home.dart';
 
 class Profile extends StatelessWidget {
   const Profile({Key key, @required this.username}) : super(key: key);
@@ -19,12 +20,12 @@ class Profile extends StatelessWidget {
             RaisedButton(
               child: Text('Logout'),
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => FaceAuth()
-                  ),
-                );
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => MyHomePage()
+                //   ),
+                // );
               },
             )
           ],

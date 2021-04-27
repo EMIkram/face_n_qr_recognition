@@ -37,7 +37,6 @@ class SignUpState extends State<SignUp> {
   bool _bottomSheetVisible = false;
 
   // service injection
-
   MLVisionService _mlVisionService = MLVisionService();
   CameraService _cameraService = CameraService();
   FaceNetService _faceNetService = FaceNetService();
@@ -74,17 +73,17 @@ class SignUpState extends State<SignUp> {
     print('onShot performed');
 
     if (faceDetected == null) {
-      
+
       showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              content: Text('No face detected!'),
-            );
-          },
-          // child: AlertDialog(
-          //   content: Text('No face detected!'),
-          // )
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: Text('No face detected!'),
+          );
+        },
+        // child: AlertDialog(
+        //   content: Text('No face detected!'),
+        // )
       );
 
       return false;
@@ -93,9 +92,9 @@ class SignUpState extends State<SignUp> {
 
       _saving = true;
 
-      await Future.delayed(Duration(milliseconds: 100));
+      await Future.delayed(Duration(milliseconds: 500));
       await _cameraService.cameraController.stopImageStream();
-      await Future.delayed(Duration(milliseconds: 100));
+      await Future.delayed(Duration(milliseconds: 200));
       await _cameraService.takePicture(imagePath);
 
       setState(() {

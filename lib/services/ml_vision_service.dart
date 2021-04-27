@@ -1,7 +1,8 @@
 import 'package:camera/camera.dart';
-import 'package:face_n_qr_recognition/services/camera.service.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:flutter/material.dart';
+
+import 'camera.service.dart';
 
 class MLVisionService {
   // singleton boilerplate

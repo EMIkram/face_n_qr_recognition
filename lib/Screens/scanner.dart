@@ -21,10 +21,7 @@ class QRViewExampleState extends State<QRViewExample> {
   QRViewController controller;
   CameraDescription cameraDescription;
   List<CameraDescription> cameras;
-
   /// takes the front camera
-
-
   @override
   void initState() {
     availableCameras().then((cams) {
@@ -96,7 +93,6 @@ class QRViewExampleState extends State<QRViewExample> {
       ),
     );
   }
-
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) {
@@ -111,7 +107,6 @@ class QRViewExampleState extends State<QRViewExample> {
     ));
     });
   }
-
   @override
   void dispose() {
     controller?.dispose();

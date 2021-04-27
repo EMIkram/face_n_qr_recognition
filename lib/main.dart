@@ -96,6 +96,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'Screens/home.dart';
 import 'Screens/scanner.dart';
 
 void main() {
@@ -110,22 +111,15 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'SBS AMS test'),
+      home: HomePage(),
+
+      // MyHomePage(title: 'SBS AMS test'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
 
   final String title;
 
@@ -134,8 +128,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
-
+TextEditingController _controller = TextEditingController();
+String _qrString ;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -152,25 +146,57 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
         title: Text(widget.title),
       ),
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            QrImage(
-              data: 'Zain',
-              version: 4,
-              size: 250,
-              gapless: false,
-              embeddedImage: AssetImage('assets/Sbs.png'),
-              embeddedImageStyle: QrEmbeddedImageStyle(
-                size: Size(80, 80),
+            SizedBox(height: 50,),
+            _qrString==null? Container(
+              padding: EdgeInsets.all(50),
+              color: Colors.black12,
+              height: 240,width: 240,):
+            Container(
+              height: 240,
+              child: QrImage(
+                data: _qrString,
+                version: 3,
+                size: 250,
+                gapless: false,
+                embeddedImage: AssetImage('assets/Sbs.png'),
+                embeddedImageStyle: QrEmbeddedImageStyle(
+                  size: Size(80, 80),
+                ),
               ),
             ),
             SizedBox(height: 10,),
-            Text("Zain",style: TextStyle(
-                fontSize: 25,
-                fontWeight: FontWeight.bold
-            ),)
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: TextField(
+            onChanged: (text){
+              setState(() {
+                text==''?
+                _qrString=null:
+                    _qrString=text;
+              });
+            },
+            controller: _controller,
+            decoration: InputDecoration(
+              labelText: "Generate QR",
+                border: OutlineInputBorder(),
+                hintText: 'Input and generate QR'
+            ),
+          ),
+        ),
+            SizedBox(
+              height: 20,
+            ),
+            ElevatedButton(onPressed: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => QRViewExample()),
+              );
+            }, child: Text("Scan QR")),
+
           ],
         ),
       ),

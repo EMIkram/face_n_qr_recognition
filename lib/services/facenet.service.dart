@@ -28,8 +28,7 @@ class FaceNetService {
   //  saved users data
   dynamic data = {};
 
-  Future loadModel() async
-  {
+  Future loadModel() async {
     try {
       final gpuDelegateV2 = tflite.GpuDelegateV2(
           options: tflite.GpuDelegateOptionsV2(
@@ -167,6 +166,7 @@ class FaceNetService {
   /// Adds the power of the difference between each point
   /// then computes the sqrt of the result 📐
   double _euclideanDistance(List e1, List e2) {
+
     double sum = 0.0;
     for (int i = 0; i < e1.length; i++) {
       sum += pow((e1[i] - e2[i]), 2);
