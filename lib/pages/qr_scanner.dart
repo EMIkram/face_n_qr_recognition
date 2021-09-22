@@ -1,16 +1,17 @@
 import 'dart:io';
 
-import 'package:FaceNetAuthentication/Utils/Utils.dart';
-import 'package:FaceNetAuthentication/pages/home.dart';
-import 'package:FaceNetAuthentication/pages/sign-in.dart';
-import 'package:FaceNetAuthentication/services/facenet.service.dart';
-import 'package:FaceNetAuthentication/services/ml_vision_service.dart';
 import 'package:camera/camera.dart';
+import 'package:face_n_qr_recognition/Utils/Utils.dart';
+import 'package:face_n_qr_recognition/db/database.dart';
+import 'package:face_n_qr_recognition/pages/sign-in.dart';
+import 'package:face_n_qr_recognition/services/facenet.service.dart';
+import 'package:face_n_qr_recognition/services/ml_vision_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
-import 'db/database.dart';
+import 'home.dart';
+
 
 class QRScanner extends StatefulWidget {
   @override

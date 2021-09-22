@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:FaceNetAuthentication/Utils/Utils.dart';
 import 'package:FaceNetAuthentication/pages/qr_scanner.dart';
 import 'package:FaceNetAuthentication/pages/widgets/FacePainter.dart';
-import 'package:FaceNetAuthentication/pages/widgets/auth-action-button.dart';
 import 'package:FaceNetAuthentication/services/camera.service.dart';
 import 'package:FaceNetAuthentication/services/facenet.service.dart';
 import 'package:FaceNetAuthentication/services/ml_vision_service.dart';
